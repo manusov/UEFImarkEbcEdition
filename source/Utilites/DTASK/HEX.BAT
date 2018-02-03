@@ -1,0 +1,1 @@
+d:\tools\bt dtask.efi dtask.hex /A /H /N=16

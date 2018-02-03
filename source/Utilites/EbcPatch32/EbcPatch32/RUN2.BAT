@@ -1,0 +1,3 @@
+cls
+EbcPatch32
+pause

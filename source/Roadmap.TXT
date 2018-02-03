@@ -1,0 +1,144 @@
+Notes for bugs detect:
+CHKPCIE.INC (109).
+
+Notes for upgrade:
+DATAINFO.INC (275),
+INFCPUF.INC (57).
+- support native CPUID function 7,extend scratch pad usage, use EBC debugger,
+- add features names strings and 16-bit tags,
+- replace interpreter for 16-bit tags.
+
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
++ROADMAP 0.10.
+
+1)+ Save TXT.
+2)+ Save BMP.
+3)+ Load CFG. Include video mode select. Syntax errors handling. Coordinate PAUSE variable and SYSTEM BITMAP bit.
+4)+ Save CFG. Save also if not existed.
+5)+ Checkpoints.
+6)+ Update DOC.
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
++ROADMAP 0.11.
+
+1)+ Add new checkpoint 01h. Detect Instruction Set Architecture. Detect x86, yet detect by 32-bit. Debug Support Protocol, page 862.
+2)- Add new info string (Native CPU and CPL). Correct checkpoints sequence.
+3)- Check generation TXT and BMP.
+4)+ DOC: Add new checkpoint 01h.
+5)+ DOC: Add new modules: check native CPU and built info string.
+6)- DOC: Add new info string.
+7)+ DOC: History.
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
+ROADMAP 0.12.
+1)+ Last text string, "press...".
+2)+ Reject last string in the text report.
+3)+ Update DOC: 1 module, 1 debug code.
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
+ROADMAP 0.13.
+
+1) Start built PCI, AGP, ACPI and other under construction. Write at normal INC files positions. Debug at diskette (skip prev. seq.).
+2) Item 19 (items, selected for this pass).
+3) Problem with sample implementation diskette: check spec. version before run daughter task, old hang.
+4) Update DOC.
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
+ROADMAP 0.30.
+
+1)+ Video benchmarks: GOP.Blt.Fill, GOP.Blt.Copy.
+2) Video benchmarks: Mem.Fill, Mem.Copy (system->video).
+3) Video benchmarks: Native.Fill, Native.Copy (system->video). Реализовать для 386 и SSE. Добавить шаги и строки. Возможно еще больше методов.
+4)+ Benchmarks results visualization.
+5)+ Real time clock support.
+6) File I/O support, include Deferred Status Write. Loaded Image Protocol, detect application start path.
+7)+ Save text report.
+8)+ Save graphics screen image.
+9)+ Load and interpreting configuration file.
+10)+ Save configuration file.
+11) PCI Express info string (PCI ROOT BRIDGE).
+12) Ranges attributes info string (MTRR/CAP).
+13) Video memory info string (GOP+Hardware, required PCI, BAR base and size values).
+14)+ String "Press any key, F9=TXT, F10=BMP", after benchmarks.
+15) UEFI Shell detection.
+16) PC Platform detection (ACPI?).
+17) Extreme edition video memory address remap. TLP size reprogramming, fix "silent handling" for PCIe, deferred at v0.13 for later make.
+18) Support UGADRAW for non-GOP systems.
+
+19) Сборка, коррекция и оптимизация комплекса UEFIMARK 2.0. 
+     - Calls with 16-bit offsets R1+Offset?
+     - Optimize immediates instead constants at registers, example="ADD32 R2,R7,1" when R7=0. Possible "ADD32 R2,R2,1" but 5+5+1=11, not 6.
+     - Output_Clear save-restore R3.
+     - R3-R7 volatile, save-restore when use API, optimize push-pop required or not.
+     - Subroutine String_Write_Bold
+     - Regularize Sys_Bitmap
+     - Debug errors handling during start, stop normal stop if errors.
+     - Variables alignment 8 or 16, align Global_Variables_Pool.
+     - Make send_Checkpoint use R7.
+     - Сделать отдельный файл LIBAPI.INC или каталог EFIAPI, где собрать все вызовы API.
+     - Сделать правильное выравнивание стека для IA32 и x64: после записи параметров, не до записи.
+     - Учесть AMI Shadow bug: искажение параметров, находящихся в стеке.
+     - Избежать переполнения буфера если длина строки Firmware Vendor превышает размер буфера.
+     - Colors equations for info strings.
+     - Обнулять Standard, Extended CPU features list, для того, чтобы если соотв. функция CPUID не поддерживается, List=0 гарантированно.
+     - Проверить точность визуализации частот и периодов, особенно дробной части: ".1/.001" bug. Минимизировать погрешность. + Бенчмарки также.
+     - Дополнительно комментировать "шапки" подпрограмм.
+     - CHKNCPU.INC line 138, make copy memory-memory by single instruction.
+     - Размер запрашиваемого блока памяти уменьшить до 16MB.
+     - Шаг 4Eh, визуализация Press F9, F10.
+     - Subroutines for optimization LIBRTC.INC.
+     - Regularize errors reporting, some subroutines in the LIBTEXT.INC.
+     - Optimize, remove code duplication for save TXT and BMP.
+     - Correct x64 edition, use RCX in the Local_Change_Ext, "key ready" comment usen not for keyboard only.
+     - Action number for save and load for error reporting?
+     - Optimizing, make subroutines for file operations with frequently used parameters.
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
+ROADMAP 0.40. ВАЖНЫЕ ИЗМЕНЕНИЯ.
+
+Одна технология решает три проблемы: 
+1) Распознавание нативного процессора.
+2) Упаковка модулей. Возможно использование шифрования и проверки CRC.
+3) Реализация модульной структуры, четкое разделение EBC и нативного кода. Модули могут транслироваться вне FASM.
+
+Использовать 4 нативных агента (IA32, x64, Itanium, ARM), транслируемых вне основного исходного текста,
+подключенных к исходному тексту как HEX-блоки. Их запуск средствами UEFI будет возвращать ошибку при
+запуске "не родного" модуля, это можно использовать при распознавании типа нативного процессора.
+Подпрограммы, вызываемые из EBC-кода можно сконцентрировать в нативных агентах, вплоть до регистрации
+новых протоколов в среде UEFI.
+
+Это позволит:
+- распознавать тип нативного процессора
+- четко разделить нативный код и EBC-код
+- использовать трансляторы, отличные от FASM для Itanium и ARM, затем загружать результат в FASM или EBC Compiler в виде HEX.
+- при необходимости использовать EBC Compiler для основного модуля, FASM для IA32 и x64.
+
+Есть функция для запуска модуля, уже находящегося в буфере, без загрузки с диска.
+StartImage() использует Handle после LoadImage(). 
+Можно использовать ненулевое значение поля LoadImage.SourceBuffer. Specification Page 248.
+Совместить размещение нативных драйверов и упаковку.
+
+1 распаковщик + 5 распаковываемых модулей:
+1) Unpacker
+2) EBC Main Application
+3) IA32 Native Operations Driver
+4) x64 Native Operations Driver
+5) IPF Native Operations Driver
+6) ARM Native Operations Driver
+
+Драйвера устанавливают протоколы, которые использует приложение.
+Возможна более сложная модель:
+I.   Ядро (EBC, диспетчер и распаковщик).
+II.  Драйвера (нативные и EBC).
+III. Приложения (EBC).
+
+;-------------------------------------------------------------------------------------------------------------------------------;
+
+SEE PREVIOUS SOURCES FOR ACPI SUPPORT, AND TMP, AND ARM.

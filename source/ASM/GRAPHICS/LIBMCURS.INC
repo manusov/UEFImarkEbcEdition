@@ -1,0 +1,1 @@
+; Reserved (MCURS = Mouse Cursor).
