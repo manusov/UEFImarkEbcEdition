@@ -222,7 +222,11 @@ Local_Inf_PCIe_2:
 		MOVIQW		R4,00001111b
 		AND32		R7,R4
 		MOVSNW		R7,R7,-1		; R7-1, R7 = Selector
-		CMPI32WUGTE	R7,2
+		;
+		; CMPI32WUGTE	R7,2
+		;
+		CMPI32WULTE	R7,2  ; v0.27 bug fix
+		;
 		JMP8CS		Inf_PCIe_4
 		MOVIQW		R7,3
 Inf_PCIe_4:	MOVIQW		R6,3			; R6 = Limit

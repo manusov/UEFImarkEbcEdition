@@ -2,7 +2,7 @@
 ;=                                                                         =;
 ;=    UEFIMARK. MAIN MODULE. SYSTEM INFORMATION AND BENCHMARK UTILITY.     =;
 ;=                       EFI Byte Code Edition.                            =;
-;=                     (C)2014-2017 IC Book Labs.                          =;
+;=                     (C)2014-2018 IC Book Labs.                          =;
 ;=                                                                         =;
 ;===========================================================================;
 
