@@ -1,0 +1,7 @@
+v0.27
+Fix PCIe link bandwidth detection.
+
+v0.28
+Fix PCI bus scan error (cycling) if last bus number = 0FFh.
+Fix Video RAM range MTRR status not reprogrammed and not
+visualized if non-UC default memory type. 

@@ -132,8 +132,10 @@ Entry_C_MTRR:
 		rdmsr
 		test	ah,00001000b
 		jz	Error_MTRR	; MTRR Capability Disabled ?
-		test	al,al
-		jnz	Error_MTRR	; Default must be UC
+
+; v0.28		test	al,al
+; v0.28		jnz	Error_MTRR	; Default must be UC
+
 ;--- Scan Variable MTRR ---
 		mov	cx,0201h	; IA32_MTRR_PHYSMASK0, ECX.[31-16]=0
 Scan_Var_MTRR:	rdmsr

@@ -361,7 +361,11 @@ Next_Dev:	MOVIQD		R4,000010000h
 		JMP8CC		Scan_PCI		; Go cycle if device number not overflow
 		MOVIQD		R4,001000000h
 		ADD64		R2,R4			; Bus Number + 1
-		MOVIQQ		R4,0FF000000h
+
+; v0.28		MOVIQQ		R4,0FF000000h
+		MOVIQQ		R4,1FF000000h		; Extra bit (9) required for detect bus number overflow
+; v0.28
+
 		AND64		R2,R4			; Select bus number only
 
 	;--- changes for v0.24 ---
@@ -369,9 +373,6 @@ Next_Dev:	MOVIQD		R4,000010000h
 	;	CMPI32WEQ	R2,0
 	;	JMP8CC		Scan_PCI		; Go cycle if bus number not overflow
 
-;**********
-; BREAK 3
-;**********
 
 		MOVBW		R7,@R1,0,_Last_PCI_Bus
 		MOVIQW		R4,24
