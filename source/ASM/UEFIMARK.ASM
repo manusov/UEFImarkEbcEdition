@@ -74,6 +74,9 @@ Anchor_IP:
 ;---------- System Info and Benchmarks with visualize parameters -----------;
 ; Checkpoints 020h-04Fh (in the subroutine)
 ;---
+
+		CALL32          Input_Check_Key		; This for pre-clear keyboard buffer before benchmarks,
+							; to prevent results screen skip, v0.29 change
 		MOVIQW		R2,_Info_Sequence
 		CALL32		Dispatcher_SysInfo
 

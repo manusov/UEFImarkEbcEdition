@@ -5,3 +5,8 @@ v0.28
 Fix PCI bus scan error (cycling) if last bus number = 0FFh.
 Fix Video RAM range MTRR status not reprogrammed and not
 visualized if non-UC default memory type. 
+
+v0.29
+Clear keyboard buffer before benchmark.
+Bug fix: if firmware don't clear keyboard input, results screen can be skipped.
+
