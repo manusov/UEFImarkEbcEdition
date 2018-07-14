@@ -20,5 +20,5 @@ String_Copyright	DB  '(C) IC Book Labs.',0
 
 ; This string X position must be conform with previous string length.
 Program_Vendor_Data_1	DB  '  '
-Program_Vendor_Data	DB  'http://jelezo.com.ua/' , 0
+Program_Vendor_Data	DB  'http://uefi.composter.com.ua/' , 0
 
