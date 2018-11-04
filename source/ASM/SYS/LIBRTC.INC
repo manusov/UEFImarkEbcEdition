@@ -65,11 +65,17 @@ EFI_Get_Time:
 ; R3 = Pointer to structure EFI_Time_Capabilities in the stack frame
 ; R4 = Pointer to structure EFI_Time_Value in the stack frame
 ;---
-		PUSHN		R3			; Parameter #2 = Pointer to EFI_TCAP
-		PUSHN		R4			; Parameter #1 = Pointer to EFI_TIME
-		CALL32EXA	@R2,00,24		; call RuntimeServices.GetTime, N=0, C=24
-		POPN		R4			; Remove parameter #1
-		POPN		R3			; Remove parameter #2
+
+		PUSHN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
+
+		PUSHN		R3		; Parameter #2 = Pointer to EFI_TCAP
+		PUSHN		R4		; Parameter #1 = Pointer to EFI_TIME
+		CALL32EXA	@R2,00,24	; call RuntimeServices.GetTime, N=0, C=24
+		POPN		R4		; Remove parameter #1
+		POPN		R3		; Remove parameter #2
+
+		POPN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
+
 ;--- Check status ---
 EGT_1:		MOVSNW		R7,R7			; Unify for 32 and 64
 		CMPI64WUGTE	R7,1			; Condition Flag = 1 if R7>0 (unsigned)

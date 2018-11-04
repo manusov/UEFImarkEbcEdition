@@ -15,7 +15,7 @@ _Program_Vendor_Data	= Program_Vendor_Data - Global_Variables_Pool
 
 ; This 2 strings must be sequental, without separation by 0.
 
-String_Version		DB  'UEFImark EBC Edition v0.29. '
+String_Version		DB  'UEFImark EBC Edition v0.30. '
 String_Copyright	DB  '(C) IC Book Labs.',0
 
 ; This string X position must be conform with previous string length.

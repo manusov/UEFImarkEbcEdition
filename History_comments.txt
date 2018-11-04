@@ -10,3 +10,10 @@ v0.29
 Clear keyboard buffer before benchmark.
 Bug fix: if firmware don't clear keyboard input, results screen can be skipped.
 
+v0.30
+Shift stack for EBC-to-native calls (under debug).
+Required for compatibility with
+Oracle VirtualBox 5.2.20 UEFI firmware.
+Updated subroutines:
+Setup_Video_Mode, Restore_Video_Mode, EFI_Get_Time.
+

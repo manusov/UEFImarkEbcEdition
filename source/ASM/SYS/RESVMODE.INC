@@ -26,11 +26,15 @@ Restore_Video_Mode:
 
 ; old here PUSH64/POP64
 
-		PUSHN		R3			; Parm#2=Mode number
-		PUSHN		R2			; Parm#1=Protocol pointer
-		CALL32EXA	@R2,1,0			; GopTable.ModeSet
+		PUSHN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
+
+		PUSHN		R3		; Parm#2=Mode number
+		PUSHN		R2		; Parm#1=Protocol pointer
+		CALL32EXA	@R2,1,0		; GopTable.ModeSet
 		POPN		R2
 		POPN		R3
+
+		POPN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
 
 		CALL32		Output_Clear
 		RET
