@@ -30,7 +30,7 @@ Setup_Video_Mode:
 
 		MOVQW		R2,@R1,0,_GOP_Protocol
 
-		PUSHN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
+; v0.31		PUSHN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug, hangs on ASUS N750JK with loaded EBC interpreter
 
 		PUSHN		R3		; Parm#2=Mode number
 		PUSHN		R2		; Parm#1=Protocol pointer
@@ -38,7 +38,7 @@ Setup_Video_Mode:
 		POPN		R2
 		POPN		R3
 
-		POPN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug
+; v0.31		POPN		R3		; Added at v0.30, shift stack before EBC-to-native call, under debug, hangs on ASUS N750JK with loaded EBC interpreter
 
 ;--- Check status after set video mode ---
 		MOVSNW		R7,R7			; Make unify for 32 and 64
